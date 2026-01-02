@@ -147,9 +147,6 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         serializer_class = self.serializer_class
 
-        if self.action == "list":
-            serializer_class = OrderSerializer
-
         if self.action == "create":
             serializer_class = OrderWriteSerializer
 

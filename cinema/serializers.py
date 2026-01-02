@@ -113,6 +113,16 @@ class TicketsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ("id", "movie_session", "row", "seat")
+
+
+class TicketWriteSerializer(serializers.ModelSerializer):
+    movie_session = serializers.PrimaryKeyRelatedField(
+        queryset=MovieSession.objects.all()
+    )
+
+    class Meta:
+        model = Ticket
+        fields = ("id", "movie_session", "row", "seat")
         validators = [
             UniqueTogetherValidator(
                 queryset=Ticket.objects.all(),
@@ -132,16 +142,6 @@ class TicketsSerializer(serializers.ModelSerializer):
             error=serializers.ValidationError,
         )
         return data
-
-
-class TicketWriteSerializer(serializers.ModelSerializer):
-    movie_session = serializers.PrimaryKeyRelatedField(
-        queryset=MovieSession.objects.all()
-    )
-
-    class Meta:
-        model = Ticket
-        fields = ("id", "movie_session", "row", "seat")
 
 
 class OrderSerializer(serializers.ModelSerializer):
