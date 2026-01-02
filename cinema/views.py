@@ -1,6 +1,6 @@
 from django.db.models import Q, Count, ExpressionWrapper, F, IntegerField
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
+
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 
@@ -31,21 +31,25 @@ class ParamsMixin:
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    pagination_class = None
 
 
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    pagination_class = None
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
+    pagination_class = None
 
 
 class MovieViewSet(viewsets.ModelViewSet, ParamsMixin):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    pagination_class = None
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -85,6 +89,7 @@ class MovieViewSet(viewsets.ModelViewSet, ParamsMixin):
 class MovieSessionViewSet(viewsets.ModelViewSet, ParamsMixin):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer
+    pagination_class = None
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -133,16 +138,9 @@ class MovieSessionViewSet(viewsets.ModelViewSet, ParamsMixin):
         return queryset
 
 
-class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 100
-    page_size_query_param = "page_size"
-    max_page_size = 1000
-
-
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
